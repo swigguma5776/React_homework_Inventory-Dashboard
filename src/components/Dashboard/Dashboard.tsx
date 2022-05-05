@@ -10,13 +10,18 @@ import { Drawer as MUIDrawer,
     Divider,
     Button,
     CssBaseline,
-    Box
+    Box,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
 } from '@mui/material'; 
 import MenuIcon from '@mui/icons-material/Menu'; 
 import { ChevronRight, ChevronLeft } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom'; 
 import { theme } from '../../Theme/themes'; 
-import { DataTable } from '../../components'; 
+import { DataTable , TurbineForm } from '../../components'; 
 import turbine_image from '../../assets/images/cloudy-turbines.jpg'; 
 
 
@@ -51,7 +56,6 @@ const myStyles = {
     },
     drawerPaper: {
         width: drawerWidth,
-        backgroundColor: theme.palette.primary.contrastText,
       },
     drawerHeader: {
         display: 'flex',
@@ -89,7 +93,7 @@ const myStyles = {
         display: 'flex'
     },
     toolbarButton: {
-        marginLeft: '20px',
+        marginLeft: 'auto',
         backgroundColor: theme.palette.primary.contrastText,
         "&:hover": {
             color: 'white',
@@ -103,6 +107,7 @@ const myStyles = {
 export const Dashboard = () => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false); 
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true); 
@@ -110,6 +115,14 @@ export const Dashboard = () => {
 
     const handleDrawerClose = () => {
         setOpen(false); 
+    }
+
+    const handleDialogOpen = () => {
+        setDialogOpen(true);
+    }
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
     }
 
     const itemsList = [
@@ -140,7 +153,19 @@ export const Dashboard = () => {
 
                     </IconButton>
                     <Typography variant = 'h6' noWrap> Dashboard  </Typography>
-                    <Button sx={myStyles.toolbarButton}>Create New Drone</Button>
+                    <Button sx={myStyles.toolbarButton} onClick={handleDialogOpen}>Create New Turbine</Button>
+                    {/* Where the Dialog Popsup HTML */}
+                    <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby='form-dialog-title'>
+                        <DialogTitle id='form-dialog-title'>Add a New Turbin!</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>Fill out form to create a new Turbine</DialogContentText>
+                            <TurbineForm />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleDialogClose} color='warning'>Cancel</Button>
+                        </DialogActions>
+                    </Dialog>
+
                 </Toolbar>
             </AppBar>
             <MUIDrawer
